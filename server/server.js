@@ -6,9 +6,13 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+const authRoutes = require("./routes/authRoutes");  // <-- ADD THIS
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/auth", authRoutes);  // <-- ADD THIS
 
 app.get("/", (req, res) => {
   res.send("🏥 Hospital Management System API is Running");
