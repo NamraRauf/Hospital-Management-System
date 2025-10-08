@@ -24,7 +24,7 @@ function App() {
     { id: 5, name: "Jane Smith", email: "jane@email.com", role: "Patient", specialization: "N/A", status: "Inactive", lastLogin: "2 days ago", avatar: "👩" },
     { id: 6, name: "Admin User", email: "admin@hospital.com", role: "Admin", specialization: "System Admin", status: "Active", lastLogin: "30 minutes ago", avatar: "👨‍💼" }
   ]);
-  // const [showSuperAdmin, setShowSuperAdmin] = useState(false); // Removed unused variable
+  const [showSuperAdmin, setShowSuperAdmin] = useState(false);
   const [showUserForm, setShowUserForm] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
@@ -420,35 +420,35 @@ function App() {
     setShowPasswordReset(true);
   };
 
-  // const handlePasswordResetSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (newPassword && resettingUser) {
-  //     // Update user password in the allUsers list
-  //     setAllUsers(prevUsers => 
-  //       prevUsers.map(user => 
-  //         user.id === resettingUser.id 
-  //           ? { ...user, password: newPassword, lastPasswordReset: new Date().toLocaleString() }
-  //           : user
-  //       )
-  //     );
+  const handlePasswordResetSubmit = (e) => {
+    e.preventDefault();
+    if (newPassword && resettingUser) {
+      // Update user password in the allUsers list
+      setAllUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === resettingUser.id 
+            ? { ...user, password: newPassword, lastPasswordReset: new Date().toLocaleString() }
+            : user
+        )
+      );
       
-  //     alert(`Password successfully reset for ${resettingUser.name}!\nNew password: ${newPassword}`);
-  //     setShowPasswordReset(false);
-  //     setResettingUser(null);
-  //     setNewPassword('');
-  //   } else {
-  //     alert('Please enter a new password');
-  //   }
-  // };
+      alert(`Password successfully reset for ${resettingUser.name}!\nNew password: ${newPassword}`);
+      setShowPasswordReset(false);
+      setResettingUser(null);
+      setNewPassword('');
+    } else {
+      alert('Please enter a new password');
+    }
+  };
 
-  // const generateRandomPassword = () => {
-  //   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-  //   let password = '';
-  //   for (let i = 0; i < 12; i++) {
-  //     password += chars.charAt(Math.floor(Math.random() * chars.length));
-  //   }
-  //   setNewPassword(password);
-  // };
+  const generateRandomPassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let password = '';
+    for (let i = 0; i < 12; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setNewPassword(password);
+  };
 
   // Back Button Component
   const BackButton = () => {
