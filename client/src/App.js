@@ -1798,6 +1798,7 @@ function App() {
                               </button>
                               <button 
                                 onClick={() => {
+                                  alert('Reset password button clicked for: ' + user.name);
                                   console.log('Reset password button clicked for:', user.name);
                                   handlePasswordReset(user);
                                 }}
@@ -2328,6 +2329,7 @@ function App() {
                                 </button>
                                 <button 
                                   onClick={() => {
+                                    alert('Reset password button clicked for: ' + user.name);
                                     console.log('Reset password button clicked for:', user.name);
                                     handlePasswordReset(user);
                                   }}
