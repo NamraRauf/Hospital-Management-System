@@ -27,6 +27,9 @@ function App() {
   const [showSuperAdmin, setShowSuperAdmin] = useState(false);
   const [showUserForm, setShowUserForm] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
+  const [showPasswordReset, setShowPasswordReset] = useState(false);
+  const [resettingUser, setResettingUser] = useState(null);
+  const [newPassword, setNewPassword] = useState('');
   const [newUser, setNewUser] = useState({
     name: '',
     email: '',
@@ -362,6 +365,43 @@ function App() {
       ...newUser,
       [e.target.name]: e.target.value
     });
+  };
+
+  // Password reset functions
+  const handlePasswordReset = (user) => {
+    setResettingUser(user);
+    setNewPassword('');
+    setShowPasswordReset(true);
+  };
+
+  const handlePasswordResetSubmit = (e) => {
+    e.preventDefault();
+    if (newPassword && resettingUser) {
+      // Update user password in the allUsers list
+      setAllUsers(prevUsers => 
+        prevUsers.map(user => 
+          user.id === resettingUser.id 
+            ? { ...user, password: newPassword, lastPasswordReset: new Date().toLocaleString() }
+            : user
+        )
+      );
+      
+      alert(`Password successfully reset for ${resettingUser.name}!\nNew password: ${newPassword}`);
+      setShowPasswordReset(false);
+      setResettingUser(null);
+      setNewPassword('');
+    } else {
+      alert('Please enter a new password');
+    }
+  };
+
+  const generateRandomPassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let password = '';
+    for (let i = 0; i < 12; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setNewPassword(password);
   };
   
   const renderPage = () => {
@@ -1739,31 +1779,48 @@ function App() {
                           </td>
                           <td style={{ padding: "15px", color: "#7f8c8d" }}>{user.lastLogin}</td>
                           <td style={{ padding: "15px" }}>
-                            <div style={{ display: "flex", gap: "8px" }}>
+                            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                               <button 
                                 onClick={() => handleEditUser(user)}
                                 style={{
-                                  padding: "6px 12px",
+                                  padding: "6px 10px",
                                   backgroundColor: "#3498db",
                                   color: "white",
                                   border: "none",
                                   borderRadius: "4px",
                                   cursor: "pointer",
-                                  fontSize: "12px"
+                                  fontSize: "11px",
+                                  minWidth: "50px"
                                 }}
                               >
                                 Edit
                               </button>
                               <button 
+                                onClick={() => handlePasswordReset(user)}
+                                style={{
+                                  padding: "6px 10px",
+                                  backgroundColor: "#f39c12",
+                                  color: "white",
+                                  border: "none",
+                                  borderRadius: "4px",
+                                  cursor: "pointer",
+                                  fontSize: "11px",
+                                  minWidth: "50px"
+                                }}
+                              >
+                                Reset Password
+                              </button>
+                              <button 
                                 onClick={() => handleDeleteUser(user.id)}
                                 style={{
-                                  padding: "6px 12px",
+                                  padding: "6px 10px",
                                   backgroundColor: "#e74c3c",
                                   color: "white",
                                   border: "none",
                                   borderRadius: "4px",
                                   cursor: "pointer",
-                                  fontSize: "12px"
+                                  fontSize: "11px",
+                                  minWidth: "50px"
                                 }}
                               >
                                 Delete
@@ -1891,6 +1948,137 @@ function App() {
                           border: "none",
                           borderRadius: "5px",
                           cursor: "pointer"
+                        }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* Password Reset Modal */}
+            {showPasswordReset && (
+              <div style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: "rgba(0,0,0,0.5)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1000
+              }}>
+                <div style={{
+                  backgroundColor: "white",
+                  padding: "30px",
+                  borderRadius: "10px",
+                  width: "90%",
+                  maxWidth: "500px",
+                  maxHeight: "80vh",
+                  overflow: "auto"
+                }}>
+                  <h3 style={{ marginTop: "0", textAlign: "center", color: "#e74c3c" }}>
+                    🔒 Reset Password for {resettingUser?.name}
+                  </h3>
+                  <p style={{ textAlign: "center", color: "#666", marginBottom: "20px" }}>
+                    Enter a new password for this user. They will need to use this password to log in.
+                  </p>
+                  
+                  <form onSubmit={handlePasswordResetSubmit}>
+                    <div style={{ marginBottom: "20px" }}>
+                      <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold", color: "#333" }}>
+                        New Password:
+                      </label>
+                      <div style={{ display: "flex", gap: "10px" }}>
+                        <input 
+                          type="text" 
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          placeholder="Enter new password"
+                          required
+                          style={{ 
+                            flex: 1, 
+                            padding: "12px", 
+                            border: "1px solid #ddd", 
+                            borderRadius: "6px",
+                            fontSize: "14px"
+                          }}
+                        />
+                        <button 
+                          type="button"
+                          onClick={generateRandomPassword}
+                          style={{
+                            padding: "12px 16px",
+                            backgroundColor: "#f39c12",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "6px",
+                            cursor: "pointer",
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            whiteSpace: "nowrap"
+                          }}
+                        >
+                          Generate Random
+                        </button>
+                      </div>
+                      <p style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
+                        💡 Tip: Use the "Generate Random" button for a secure password
+                      </p>
+                    </div>
+
+                    <div style={{ 
+                      backgroundColor: "#f8f9fa", 
+                      padding: "15px", 
+                      borderRadius: "6px", 
+                      marginBottom: "20px",
+                      border: "1px solid #e9ecef"
+                    }}>
+                      <h4 style={{ margin: "0 0 10px", color: "#495057", fontSize: "14px" }}>Password Requirements:</h4>
+                      <ul style={{ margin: "0", paddingLeft: "20px", fontSize: "12px", color: "#6c757d" }}>
+                        <li>At least 8 characters long</li>
+                        <li>Contains uppercase and lowercase letters</li>
+                        <li>Contains numbers and special characters</li>
+                        <li>Not easily guessable</li>
+                      </ul>
+                    </div>
+
+                    <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                      <button 
+                        type="submit"
+                        style={{
+                          padding: "12px 24px",
+                          backgroundColor: "#28a745",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "6px",
+                          cursor: "pointer",
+                          fontSize: "14px",
+                          fontWeight: "600"
+                        }}
+                      >
+                        🔄 Reset Password
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          setShowPasswordReset(false);
+                          setResettingUser(null);
+                          setNewPassword('');
+                        }}
+                        style={{
+                          padding: "12px 24px",
+                          backgroundColor: "#6c757d",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "6px",
+                          cursor: "pointer",
+                          fontSize: "14px",
+                          fontWeight: "600"
                         }}
                       >
                         Cancel
@@ -2117,31 +2305,48 @@ function App() {
                             </td>
                             <td style={{ padding: "15px", color: "#7f8c8d" }}>{user.lastLogin}</td>
                             <td style={{ padding: "15px" }}>
-                              <div style={{ display: "flex", gap: "8px" }}>
+                              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                                 <button 
                                   onClick={() => handleEditUser(user)}
                                   style={{
-                                    padding: "6px 12px",
+                                    padding: "6px 10px",
                                     backgroundColor: "#3498db",
                                     color: "white",
                                     border: "none",
                                     borderRadius: "4px",
                                     cursor: "pointer",
-                                    fontSize: "12px"
+                                    fontSize: "11px",
+                                    minWidth: "50px"
                                   }}
                                 >
                                   Edit
                                 </button>
                                 <button 
+                                  onClick={() => handlePasswordReset(user)}
+                                  style={{
+                                    padding: "6px 10px",
+                                    backgroundColor: "#f39c12",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "4px",
+                                    cursor: "pointer",
+                                    fontSize: "11px",
+                                    minWidth: "50px"
+                                  }}
+                                >
+                                  Reset Password
+                                </button>
+                                <button 
                                   onClick={() => handleDeleteUser(user.id)}
                                   style={{
-                                    padding: "6px 12px",
+                                    padding: "6px 10px",
                                     backgroundColor: "#e74c3c",
                                     color: "white",
                                     border: "none",
                                     borderRadius: "4px",
                                     cursor: "pointer",
-                                    fontSize: "12px"
+                                    fontSize: "11px",
+                                    minWidth: "50px"
                                   }}
                                 >
                                   Delete
