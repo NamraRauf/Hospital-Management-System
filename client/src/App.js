@@ -11,7 +11,10 @@ function App() {
     role: "Cardiologist",
     avatar: "👩‍⚕️",
     status: "Online",
-    lastActive: "2 minutes ago"
+    lastActive: "2 minutes ago",
+    email: "sarah@hospital.com",
+    specialization: "Cardiology",
+    department: "Cardiology Department"
   });
   const [allUsers, setAllUsers] = useState([
     { id: 1, name: "Dr. Sarah Johnson", email: "sarah@hospital.com", role: "Doctor", specialization: "Cardiology", status: "Active", lastLogin: "2 minutes ago", avatar: "👩‍⚕️" },
@@ -152,18 +155,37 @@ function App() {
           role: "Super Admin",
           avatar: "👑",
           status: "Online",
-          lastActive: "now"
+          lastActive: "now",
+          email: "superadmin@hospital.com",
+          specialization: "System Administration",
+          department: "IT Department"
         });
         setUserType('superadmin');
         setShowSuperAdmin(true);
-      } else if (email.includes('admin') || email.includes('doctor')) {
+      } else if (email.includes('admin')) {
+        setCurrentUser({
+          id: 5,
+          name: "Hospital Admin",
+          role: "Administrator",
+          avatar: "👨‍💼",
+          status: "Online",
+          lastActive: "1 minute ago",
+          email: "admin@hospital.com",
+          specialization: "Hospital Management",
+          department: "Administration"
+        });
+        setUserType('admin');
+      } else if (email.includes('doctor')) {
         setCurrentUser({
           id: 1,
           name: "Dr. Sarah Johnson",
           role: "Cardiologist",
           avatar: "👩‍⚕️",
           status: "Online",
-          lastActive: "2 minutes ago"
+          lastActive: "2 minutes ago",
+          email: "sarah@hospital.com",
+          specialization: "Cardiology",
+          department: "Cardiology Department"
         });
         setUserType('doctor');
       } else {
@@ -173,7 +195,10 @@ function App() {
           role: "Patient",
           avatar: "👤",
           status: "Online",
-          lastActive: "5 minutes ago"
+          lastActive: "5 minutes ago",
+          email: "john@email.com",
+          specialization: "N/A",
+          department: "Patient Care"
         });
         setUserType('patient');
       }
@@ -1422,20 +1447,31 @@ function App() {
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
                 <div style={{
-                  width: "50px",
-                  height: "50px",
+                  width: "60px",
+                  height: "60px",
                   borderRadius: "50%",
                   backgroundColor: "#e74c3c",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "24px"
+                  fontSize: "28px",
+                  border: "3px solid white",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
                 }}>
-                  👑
+                  {currentUser.avatar}
                 </div>
                 <div>
-                  <h1 style={{ margin: "0", fontSize: "24px" }}>Super Admin Panel</h1>
-                  <p style={{ margin: "5px 0 0", fontSize: "14px", opacity: "0.8" }}>Complete System Control & User Management</p>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "5px" }}>
+                    <h1 style={{ margin: "0", fontSize: "24px" }}>Super Admin Panel</h1>
+                    <div className="online-indicator" style={{
+                      width: "12px",
+                      height: "12px",
+                      borderRadius: "50%",
+                      backgroundColor: "#1da1f2"
+                    }}></div>
+                  </div>
+                  <p style={{ margin: "0", fontSize: "14px", opacity: "0.8" }}>Welcome, {currentUser.name} • {currentUser.status}</p>
+                  <p style={{ margin: "2px 0 0", fontSize: "12px", opacity: "0.7" }}>Complete System Control & User Management</p>
                 </div>
               </div>
               <button 
@@ -1788,22 +1824,33 @@ function App() {
                 alignItems: "center"
               }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-                  <div style={{
-                    width: "50px",
-                    height: "50px",
-                    borderRadius: "50%",
-                    backgroundColor: "#e74c3c",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "24px"
-                  }}>
-                    👑
-                  </div>
-                  <div>
+                <div style={{
+                  width: "60px",
+                  height: "60px",
+                  borderRadius: "50%",
+                  backgroundColor: "#e74c3c",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "28px",
+                  border: "3px solid white",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
+                }}>
+                  {currentUser.avatar}
+                </div>
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "5px" }}>
                     <h1 style={{ margin: "0", fontSize: "24px" }}>Super Admin Panel</h1>
-                    <p style={{ margin: "5px 0 0", fontSize: "14px", opacity: "0.8" }}>Complete System Control & User Management</p>
+                    <div className="online-indicator" style={{
+                      width: "12px",
+                      height: "12px",
+                      borderRadius: "50%",
+                      backgroundColor: "#1da1f2"
+                    }}></div>
                   </div>
+                  <p style={{ margin: "0", fontSize: "14px", opacity: "0.8" }}>Welcome, {currentUser.name} • {currentUser.status}</p>
+                  <p style={{ margin: "2px 0 0", fontSize: "12px", opacity: "0.7" }}>Complete System Control & User Management</p>
+                </div>
                 </div>
                 <button 
                   onClick={handleLogout}
@@ -2156,38 +2203,63 @@ function App() {
               height: "100vh",
               overflowY: "auto"
             }}>
-              {/* User Profile */}
-              <div style={{ padding: "0 20px 20px", borderBottom: "1px solid #e1e8ed" }}>
-                <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
-                  <div style={{
-                    width: "50px",
-                    height: "50px",
-                    borderRadius: "50%",
-                    backgroundColor: "#e3f2fd",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "24px",
-                    marginRight: "12px"
-                  }}>
-                    {currentUser.avatar}
-                  </div>
-                  <div>
-                    <h3 style={{ margin: "0", fontSize: "16px", color: "#1a1a1a" }}>{currentUser.name}</h3>
-                    <p style={{ margin: "0", fontSize: "14px", color: "#657786" }}>{currentUser.role}</p>
-                    <div style={{ display: "flex", alignItems: "center", marginTop: "4px" }}>
+                  {/* User Profile */}
+                  <div style={{ padding: "0 20px 20px", borderBottom: "1px solid #e1e8ed" }}>
+                    <div style={{ display: "flex", alignItems: "center", marginBottom: "15px" }}>
                       <div style={{
-                        width: "8px",
-                        height: "8px",
+                        width: "60px",
+                        height: "60px",
                         borderRadius: "50%",
-                        backgroundColor: "#1da1f2",
-                        marginRight: "6px"
-                      }}></div>
-                      <span style={{ fontSize: "12px", color: "#657786" }}>{currentUser.status}</span>
+                        backgroundColor: currentUser.role === 'Super Admin' ? "#e74c3c" : 
+                                        currentUser.role === 'Administrator' ? "#9b59b6" :
+                                        currentUser.role === 'Cardiologist' ? "#27ae60" : "#3498db",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "28px",
+                        marginRight: "15px",
+                        border: "3px solid white",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+                      }}>
+                        {currentUser.avatar}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <h3 style={{ margin: "0", fontSize: "18px", color: "#1a1a1a", fontWeight: "600" }}>{currentUser.name}</h3>
+                        <p style={{ margin: "2px 0", fontSize: "14px", color: "#657786", fontWeight: "500" }}>{currentUser.role}</p>
+                        {currentUser.specialization && currentUser.specialization !== 'N/A' && (
+                          <p style={{ margin: "2px 0", fontSize: "12px", color: "#8e8e8e" }}>{currentUser.specialization}</p>
+                        )}
+                        <div style={{ display: "flex", alignItems: "center", marginTop: "6px" }}>
+                          <div className="online-indicator" style={{
+                            width: "10px",
+                            height: "10px",
+                            borderRadius: "50%",
+                            backgroundColor: "#1da1f2",
+                            marginRight: "8px"
+                          }}></div>
+                          <span style={{ fontSize: "12px", color: "#1da1f2", fontWeight: "500" }}>{currentUser.status}</span>
+                          <span style={{ fontSize: "11px", color: "#8e8e8e", marginLeft: "8px" }}>• {currentUser.lastActive}</span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Additional Profile Info */}
+                    <div style={{ 
+                      backgroundColor: "#f8f9fa", 
+                      borderRadius: "8px", 
+                      padding: "12px",
+                      marginTop: "10px"
+                    }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                        <span style={{ fontSize: "12px", color: "#657786" }}>Department:</span>
+                        <span style={{ fontSize: "12px", color: "#1a1a1a", fontWeight: "500" }}>{currentUser.department}</span>
+                      </div>
+                      <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <span style={{ fontSize: "12px", color: "#657786" }}>Email:</span>
+                        <span style={{ fontSize: "12px", color: "#1a1a1a", fontWeight: "500" }}>{currentUser.email}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
               {/* Navigation Menu */}
               <div style={{ padding: "20px 0" }}>
@@ -2298,25 +2370,40 @@ function App() {
                 alignItems: "center"
               }}>
                 <h1 style={{ margin: "0", fontSize: "24px", color: "#1a1a1a" }}>Hospital Dashboard</h1>
-                <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px", marginRight: "20px" }}>
-                    <div style={{
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "50%",
-                      backgroundColor: "#e3f2fd",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "16px"
-                    }}>
-                      {currentUser.avatar}
-                    </div>
-                    <div>
-                      <p style={{ margin: "0", fontSize: "14px", fontWeight: "600", color: "#1a1a1a" }}>{currentUser.name}</p>
-                      <p style={{ margin: "0", fontSize: "12px", color: "#657786" }}>{currentUser.role}</p>
-                    </div>
-                  </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginRight: "20px" }}>
+                        <div style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          backgroundColor: currentUser.role === 'Super Admin' ? "#e74c3c" : 
+                                          currentUser.role === 'Administrator' ? "#9b59b6" :
+                                          currentUser.role === 'Cardiologist' ? "#27ae60" : "#3498db",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "18px",
+                          border: "2px solid white",
+                          boxShadow: "0 2px 6px rgba(0,0,0,0.1)"
+                        }}>
+                          {currentUser.avatar}
+                        </div>
+                        <div>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <p style={{ margin: "0", fontSize: "15px", fontWeight: "600", color: "#1a1a1a" }}>{currentUser.name}</p>
+                            <div style={{
+                              width: "8px",
+                              height: "8px",
+                              borderRadius: "50%",
+                              backgroundColor: "#1da1f2"
+                            }}></div>
+                          </div>
+                          <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#657786", fontWeight: "500" }}>{currentUser.role}</p>
+                          {currentUser.specialization && currentUser.specialization !== 'N/A' && (
+                            <p style={{ margin: "1px 0 0", fontSize: "11px", color: "#8e8e8e" }}>{currentUser.specialization}</p>
+                          )}
+                        </div>
+                      </div>
                   <button 
                     onClick={handleLogout}
                     style={{
@@ -2669,6 +2756,18 @@ function App() {
 
   return (
     <div>
+      <style>
+        {`
+          @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+          }
+          .online-indicator {
+            animation: pulse 2s infinite;
+          }
+        `}
+      </style>
       {renderPage()}
     </div>
   );
