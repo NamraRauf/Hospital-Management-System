@@ -22,12 +22,13 @@ mongoose.connection.on("error", (err) => {
   console.error("❌ MongoDB Connection Error:", err.message);
 });
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+// Try to connect to MongoDB, but don't fail if it's not available
+mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/hospital-management")
 .then(() => console.log("✅ MongoDB Connected"))
-.catch((err) => console.error("❌ MongoDB Error:", err));
+.catch((err) => {
+  console.error("❌ MongoDB Error:", err.message);
+  console.log("⚠️  Server will continue running without database connection");
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
