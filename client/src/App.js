@@ -146,6 +146,74 @@ function App() {
   };
 
   // Authentication functions
+  const handleLoginWithName = (email, password, name) => {
+    // Demo login validation with actual user name
+    if (email && password && name) {
+      // Determine user type based on email
+      let userType = 'patient';
+      let role = 'Patient';
+      let avatar = '👤';
+      let specialization = 'N/A';
+      let department = 'Patient Care';
+      
+      if (email === 'superadmin@hospital.com' && password === 'superadmin123') {
+        userType = 'superadmin';
+        role = 'Super Admin';
+        avatar = '👑';
+        specialization = 'System Administration';
+        department = 'IT Department';
+      } else if (email.includes('admin')) {
+        userType = 'admin';
+        role = 'Administrator';
+        avatar = '👨‍💼';
+        specialization = 'Hospital Management';
+        department = 'Administration';
+      } else if (email.includes('doctor')) {
+        userType = 'doctor';
+        role = 'Doctor';
+        avatar = '👨‍⚕️';
+        specialization = 'General Medicine';
+        department = 'Medical Department';
+      }
+      
+      setCurrentUser({
+        id: Date.now(), // Use timestamp as unique ID
+        name: name, // Use the actual name from registration
+        role: role,
+        avatar: avatar,
+        status: "Online",
+        lastActive: "now",
+        email: email,
+        specialization: specialization,
+        department: department
+      });
+      
+      setUserType(userType);
+      if (userType === 'superadmin') {
+        setShowSuperAdmin(true);
+      }
+      
+      // Add new user to the allUsers list
+      const newUser = {
+        id: Date.now(),
+        name: name,
+        email: email,
+        role: role,
+        specialization: specialization,
+        status: "Active",
+        lastLogin: "now",
+        avatar: avatar
+      };
+      setAllUsers(prevUsers => [...prevUsers, newUser]);
+      
+      setIsAuthenticated(true);
+      setCurrentPage('home');
+      alert(`Welcome ${name}! You are logged in as ${role}`);
+    } else {
+      alert('Please enter all required information');
+    }
+  };
+
   const handleLogin = (email, password) => {
     // Demo login validation
     if (email && password) {
@@ -191,18 +259,42 @@ function App() {
         });
         setUserType('doctor');
       } else {
+        // For new users, extract name from email or use a default
+        const nameFromEmail = email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        const newUserId = Date.now();
+        
         setCurrentUser({
-          id: 2,
-          name: "Namra Rauf",
+          id: newUserId,
+          name: nameFromEmail,
           role: "Patient",
           avatar: "👤",
           status: "Online",
-          lastActive: "5 minutes ago",
-          email: "patient@hospital.com",
+          lastActive: "now",
+          email: email,
           specialization: "N/A",
           department: "Patient Care"
         });
         setUserType('patient');
+        
+        // Add new user to the allUsers list
+        const newUser = {
+          id: newUserId,
+          name: nameFromEmail,
+          email: email,
+          role: "Patient",
+          specialization: "N/A",
+          status: "Active",
+          lastLogin: "now",
+          avatar: "👤"
+        };
+        setAllUsers(prevUsers => {
+          // Check if user already exists
+          const userExists = prevUsers.some(user => user.email === email);
+          if (!userExists) {
+            return [...prevUsers, newUser];
+          }
+          return prevUsers;
+        });
       }
       
       setIsAuthenticated(true);
@@ -438,21 +530,21 @@ function App() {
                 <p style={{ margin: "10px 0 0", color: "#657786", fontSize: "16px" }}>Join our hospital management system</p>
               </div>
 
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-                const name = formData.get('name');
-                const email = formData.get('email');
-                const password = formData.get('password');
-                
-                // Demo registration - auto login after registration
-                if (name && email && password) {
-                  alert(`Account created successfully!\nName: ${name}\nEmail: ${email}\n\nLogging you in automatically...`);
-                  handleLogin(email, password);
-                } else {
-                  alert('Please fill in all fields');
-                }
-              }}>
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const name = formData.get('name');
+                    const email = formData.get('email');
+                    const password = formData.get('password');
+                    
+                    // Demo registration - auto login after registration
+                    if (name && email && password) {
+                      alert(`Account created successfully!\nName: ${name}\nEmail: ${email}\n\nLogging you in automatically...`);
+                      handleLoginWithName(email, password, name);
+                    } else {
+                      alert('Please fill in all fields');
+                    }
+                  }}>
                 <div style={{ marginBottom: "20px" }}>
                   <label style={{ display: "block", marginBottom: "8px", color: "#1a1a1a", fontWeight: "500" }}>
                     Full Name
