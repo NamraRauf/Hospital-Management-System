@@ -325,6 +325,51 @@ function App() {
     });
   };
 
+  const handleBackToLogin = () => {
+    setIsAuthenticated(false);
+    setCurrentPage('login');
+    setShowSuperAdmin(false);
+    setShowUserForm(false);
+    setShowPasswordReset(false);
+    setShowAppointmentForm(false);
+    setShowDoctorForm(false);
+    setShowPatientForm(false);
+    setEditingUser(null);
+    setResettingUser(null);
+    setNewPassword('');
+    setNewUser({
+      name: '',
+      email: '',
+      role: 'Patient',
+      specialization: '',
+      password: ''
+    });
+    setNewAppointment({
+      patient: '',
+      doctor: '',
+      time: '',
+      date: '',
+      reason: ''
+    });
+    setNewDoctor({
+      name: '',
+      specialization: '',
+      experience: '',
+      phone: '',
+      email: '',
+      schedule: ''
+    });
+    setNewPatient({
+      name: '',
+      age: '',
+      gender: '',
+      phone: '',
+      email: '',
+      address: '',
+      medicalHistory: ''
+    });
+  };
+
   // Super Admin functions
   const handleAddUser = (e) => {
     e.preventDefault();
@@ -403,6 +448,50 @@ function App() {
       password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     setNewPassword(password);
+  };
+
+  // Back Button Component
+  const BackButton = () => {
+    if (currentPage === 'login' || currentPage === 'register') return null;
+    
+  return (
+      <div style={{
+        position: "fixed",
+        top: "20px",
+        left: "20px",
+        zIndex: 1000
+      }}>
+        <button
+          onClick={handleBackToLogin}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "12px 20px",
+            backgroundColor: "#6c757d",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontSize: "14px",
+            fontWeight: "600",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+            transition: "all 0.3s ease"
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = "#5a6268";
+            e.target.style.transform = "translateY(-2px)";
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = "#6c757d";
+            e.target.style.transform = "translateY(0)";
+          }}
+        >
+          <span style={{ fontSize: "16px" }}>←</span>
+          Back to Login
+        </button>
+      </div>
+    );
   };
   
   const renderPage = () => {
@@ -825,9 +914,30 @@ function App() {
       case 'appointments':
         return (
           <div style={{ padding: "20px" }}>
-            <h2 style={{ textAlign: "center", color: "#2c3e50", marginBottom: "30px" }}>
-              📅 Appointment Management
-            </h2>
+            <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "30px" }}>
+              <button
+                onClick={handleBackToLogin}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "10px 16px",
+                  backgroundColor: "#6c757d",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  fontWeight: "500"
+                }}
+              >
+                <span style={{ fontSize: "16px" }}>←</span>
+                Back to Login
+              </button>
+              <h2 style={{ color: "#2c3e50", margin: "0" }}>
+                📅 Appointment Management
+              </h2>
+            </div>
             
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
               <h3 style={{ color: "#2c3e50" }}>Today's Schedule</h3>
@@ -1047,9 +1157,30 @@ function App() {
       case 'patients':
         return (
           <div style={{ padding: "20px" }}>
-            <h2 style={{ textAlign: "center", color: "#2c3e50", marginBottom: "30px" }}>
-              👥 Patient Management System
-            </h2>
+            <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "30px" }}>
+              <button
+                onClick={handleBackToLogin}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "10px 16px",
+                  backgroundColor: "#6c757d",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  fontWeight: "500"
+                }}
+              >
+                <span style={{ fontSize: "16px" }}>←</span>
+                Back to Login
+              </button>
+              <h2 style={{ color: "#2c3e50", margin: "0" }}>
+                👥 Patient Management System
+              </h2>
+            </div>
             
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
               <h3 style={{ color: "#2c3e50" }}>Patient Records</h3>
@@ -1315,9 +1446,30 @@ function App() {
       case 'doctors':
         return (
           <div style={{ padding: "20px" }}>
-            <h2 style={{ textAlign: "center", color: "#2c3e50", marginBottom: "30px" }}>
-              👨‍⚕️ Doctor Management System
-            </h2>
+            <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "30px" }}>
+              <button
+                onClick={handleBackToLogin}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: "10px 16px",
+                  backgroundColor: "#6c757d",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  fontWeight: "500"
+                }}
+              >
+                <span style={{ fontSize: "16px" }}>←</span>
+                Back to Login
+              </button>
+              <h2 style={{ color: "#2c3e50", margin: "0" }}>
+                👨‍⚕️ Doctor Management System
+              </h2>
+            </div>
             
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" }}>
               <h3 style={{ color: "#2c3e50" }}>Doctor Profiles</h3>
@@ -2681,7 +2833,35 @@ function App() {
                 justifyContent: "space-between",
                 alignItems: "center"
               }}>
-                <h1 style={{ margin: "0", fontSize: "24px", color: "#1a1a1a" }}>Hospital Dashboard</h1>
+                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+                  <button
+                    onClick={handleBackToLogin}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "8px 16px",
+                      backgroundColor: "rgba(255,255,255,0.2)",
+                      color: "white",
+                      border: "1px solid rgba(255,255,255,0.3)",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      transition: "all 0.3s ease"
+                    }}
+                    onMouseOver={(e) => {
+                      e.target.style.backgroundColor = "rgba(255,255,255,0.3)";
+                    }}
+                    onMouseOut={(e) => {
+                      e.target.style.backgroundColor = "rgba(255,255,255,0.2)";
+                    }}
+                  >
+                    <span style={{ fontSize: "16px" }}>←</span>
+                    Back to Login
+                  </button>
+                  <h1 style={{ margin: "0", fontSize: "24px", color: "white" }}>Hospital Dashboard</h1>
+                </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "12px", marginRight: "20px" }}>
                         <div style={{
@@ -3080,6 +3260,7 @@ function App() {
           }
         `}
       </style>
+      <BackButton />
       {renderPage()}
     </div>
   );
