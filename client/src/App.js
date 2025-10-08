@@ -369,6 +369,7 @@ function App() {
 
   // Password reset functions
   const handlePasswordReset = (user) => {
+    console.log('Password reset clicked for user:', user);
     setResettingUser(user);
     setNewPassword('');
     setShowPasswordReset(true);
@@ -1796,7 +1797,10 @@ function App() {
                                 Edit
                               </button>
                               <button 
-                                onClick={() => handlePasswordReset(user)}
+                                onClick={() => {
+                                  console.log('Reset password button clicked for:', user.name);
+                                  handlePasswordReset(user);
+                                }}
                                 style={{
                                   padding: "6px 10px",
                                   backgroundColor: "#f39c12",
@@ -1972,6 +1976,7 @@ function App() {
                 alignItems: "center",
                 zIndex: 1000
               }}>
+                {console.log('Rendering password reset modal for:', resettingUser?.name)}
                 <div style={{
                   backgroundColor: "white",
                   padding: "30px",
@@ -2322,7 +2327,10 @@ function App() {
                                   Edit
                                 </button>
                                 <button 
-                                  onClick={() => handlePasswordReset(user)}
+                                  onClick={() => {
+                                    console.log('Reset password button clicked for:', user.name);
+                                    handlePasswordReset(user);
+                                  }}
                                   style={{
                                     padding: "6px 10px",
                                     backgroundColor: "#f39c12",
