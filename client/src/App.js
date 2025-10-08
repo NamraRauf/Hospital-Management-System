@@ -7,21 +7,22 @@ function App() {
   const [userType, setUserType] = useState('patient'); // 'patient' or 'doctor'
   const [currentUser, setCurrentUser] = useState({
     id: 1,
-    name: "Dr. Sarah Johnson",
-    role: "Cardiologist",
-    avatar: "👩‍⚕️",
+    name: "Namra Rauf",
+    role: "System Developer",
+    avatar: "👨‍💻",
     status: "Online",
-    lastActive: "2 minutes ago",
-    email: "sarah@hospital.com",
-    specialization: "Cardiology",
-    department: "Cardiology Department"
+    lastActive: "now",
+    email: "namra@hospital.com",
+    specialization: "Full Stack Development",
+    department: "IT Department"
   });
   const [allUsers, setAllUsers] = useState([
-    { id: 1, name: "Dr. Sarah Johnson", email: "sarah@hospital.com", role: "Doctor", specialization: "Cardiology", status: "Active", lastLogin: "2 minutes ago", avatar: "👩‍⚕️" },
-    { id: 2, name: "Dr. Michael Brown", email: "michael@hospital.com", role: "Doctor", specialization: "Pediatrics", status: "Active", lastLogin: "1 hour ago", avatar: "👨‍⚕️" },
-    { id: 3, name: "John Patient", email: "john@email.com", role: "Patient", specialization: "N/A", status: "Active", lastLogin: "5 minutes ago", avatar: "👤" },
-    { id: 4, name: "Jane Smith", email: "jane@email.com", role: "Patient", specialization: "N/A", status: "Inactive", lastLogin: "2 days ago", avatar: "👩" },
-    { id: 5, name: "Admin User", email: "admin@hospital.com", role: "Admin", specialization: "System Admin", status: "Active", lastLogin: "30 minutes ago", avatar: "👨‍💼" }
+    { id: 1, name: "Namra Rauf", email: "namra@hospital.com", role: "System Developer", specialization: "Full Stack Development", status: "Active", lastLogin: "now", avatar: "👨‍💻" },
+    { id: 2, name: "Dr. Sarah Johnson", email: "sarah@hospital.com", role: "Doctor", specialization: "Cardiology", status: "Active", lastLogin: "2 minutes ago", avatar: "👩‍⚕️" },
+    { id: 3, name: "Dr. Michael Brown", email: "michael@hospital.com", role: "Doctor", specialization: "Pediatrics", status: "Active", lastLogin: "1 hour ago", avatar: "👨‍⚕️" },
+    { id: 4, name: "John Patient", email: "john@email.com", role: "Patient", specialization: "N/A", status: "Active", lastLogin: "5 minutes ago", avatar: "👤" },
+    { id: 5, name: "Jane Smith", email: "jane@email.com", role: "Patient", specialization: "N/A", status: "Inactive", lastLogin: "2 days ago", avatar: "👩" },
+    { id: 6, name: "Admin User", email: "admin@hospital.com", role: "Admin", specialization: "System Admin", status: "Active", lastLogin: "30 minutes ago", avatar: "👨‍💼" }
   ]);
   const [showSuperAdmin, setShowSuperAdmin] = useState(false);
   const [showUserForm, setShowUserForm] = useState(false);
@@ -52,10 +53,11 @@ function App() {
     { id: 4, name: "Dr. Davis", specialization: "Neurology", experience: "20 years", phone: "+1-555-0204", email: "davis@hospital.com", schedule: "Mon-Fri 9AM-5PM", avatar: "👩‍⚕️", rating: 4.7, patients: 150 }
   ]);
   const [posts, setPosts] = useState([
-    { id: 1, author: "Dr. Sarah Johnson", avatar: "👩‍⚕️", time: "2 hours ago", content: "Just completed a successful heart surgery! The patient is recovering well. #Cardiology #Success", likes: 24, comments: 8, type: "success" },
-    { id: 2, author: "Hospital Admin", avatar: "🏥", time: "4 hours ago", content: "New MRI machine installed in Radiology Department. Bookings now available!", likes: 15, comments: 3, type: "announcement" },
-    { id: 3, author: "Dr. Michael Brown", avatar: "👨‍⚕️", time: "6 hours ago", content: "Pediatric vaccination drive this weekend. All children under 12 are welcome!", likes: 31, comments: 12, type: "event" },
-    { id: 4, author: "Nurse Emma", avatar: "👩‍⚕️", time: "8 hours ago", content: "Thank you to all the amazing staff for their hard work during the emergency cases today! 🙏", likes: 42, comments: 15, type: "appreciation" }
+    { id: 1, author: "Namra Rauf", avatar: "👨‍💻", time: "1 hour ago", content: "Hospital Management System is now live! Excited to see how this will improve patient care and hospital operations. #TechForGood #Healthcare", likes: 28, comments: 12, type: "success" },
+    { id: 2, author: "Dr. Sarah Johnson", avatar: "👩‍⚕️", time: "2 hours ago", content: "Just completed a successful heart surgery! The patient is recovering well. #Cardiology #Success", likes: 24, comments: 8, type: "success" },
+    { id: 3, author: "Hospital Admin", avatar: "🏥", time: "4 hours ago", content: "New MRI machine installed in Radiology Department. Bookings now available!", likes: 15, comments: 3, type: "announcement" },
+    { id: 4, author: "Dr. Michael Brown", avatar: "👨‍⚕️", time: "6 hours ago", content: "Pediatric vaccination drive this weekend. All children under 12 are welcome!", likes: 31, comments: 12, type: "event" },
+    { id: 5, author: "Nurse Emma", avatar: "👩‍⚕️", time: "8 hours ago", content: "Thank you to all the amazing staff for their hard work during the emergency cases today! 🙏", likes: 42, comments: 15, type: "appreciation" }
   ]);
   const [showAppointmentForm, setShowAppointmentForm] = useState(false);
   const [showDoctorForm, setShowDoctorForm] = useState(false);
@@ -151,7 +153,7 @@ function App() {
       if (email === 'superadmin@hospital.com' && password === 'superadmin123') {
         setCurrentUser({
           id: 999,
-          name: "Super Admin",
+          name: "Namra Rauf",
           role: "Super Admin",
           avatar: "👑",
           status: "Online",
@@ -165,7 +167,7 @@ function App() {
       } else if (email.includes('admin')) {
         setCurrentUser({
           id: 5,
-          name: "Hospital Admin",
+          name: "Namra Rauf",
           role: "Administrator",
           avatar: "👨‍💼",
           status: "Online",
@@ -178,25 +180,25 @@ function App() {
       } else if (email.includes('doctor')) {
         setCurrentUser({
           id: 1,
-          name: "Dr. Sarah Johnson",
-          role: "Cardiologist",
-          avatar: "👩‍⚕️",
+          name: "Namra Rauf",
+          role: "Doctor",
+          avatar: "👨‍⚕️",
           status: "Online",
           lastActive: "2 minutes ago",
-          email: "sarah@hospital.com",
-          specialization: "Cardiology",
-          department: "Cardiology Department"
+          email: "doctor@hospital.com",
+          specialization: "General Medicine",
+          department: "Medical Department"
         });
         setUserType('doctor');
       } else {
         setCurrentUser({
           id: 2,
-          name: "John Patient",
+          name: "Namra Rauf",
           role: "Patient",
           avatar: "👤",
           status: "Online",
           lastActive: "5 minutes ago",
-          email: "john@email.com",
+          email: "patient@hospital.com",
           specialization: "N/A",
           department: "Patient Care"
         });
@@ -217,11 +219,14 @@ function App() {
     setShowSuperAdmin(false);
     setCurrentUser({
       id: 1,
-      name: "Dr. Sarah Johnson",
-      role: "Cardiologist",
-      avatar: "👩‍⚕️",
+      name: "Namra Rauf",
+      role: "System Developer",
+      avatar: "👨‍💻",
       status: "Online",
-      lastActive: "2 minutes ago"
+      lastActive: "now",
+      email: "namra@hospital.com",
+      specialization: "Full Stack Development",
+      department: "IT Department"
     });
   };
 
