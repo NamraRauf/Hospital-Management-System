@@ -24,7 +24,7 @@ function App() {
     { id: 5, name: "Jane Smith", email: "jane@email.com", role: "Patient", specialization: "N/A", status: "Inactive", lastLogin: "2 days ago", avatar: "👩" },
     { id: 6, name: "Admin User", email: "admin@hospital.com", role: "Admin", specialization: "System Admin", status: "Active", lastLogin: "30 minutes ago", avatar: "👨‍💼" }
   ]);
-  const [showSuperAdmin, setShowSuperAdmin] = useState(false);
+  // const [showSuperAdmin, setShowSuperAdmin] = useState(false); // Removed unused variable
   const [showUserForm, setShowUserForm] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
@@ -55,7 +55,7 @@ function App() {
     { id: 3, name: "Dr. Brown", specialization: "Pediatrics", experience: "8 years", phone: "+1-555-0203", email: "brown@hospital.com", schedule: "Mon-Fri 10AM-6PM", avatar: "👨‍⚕️", rating: 4.9, patients: 80 },
     { id: 4, name: "Dr. Davis", specialization: "Neurology", experience: "20 years", phone: "+1-555-0204", email: "davis@hospital.com", schedule: "Mon-Fri 9AM-5PM", avatar: "👩‍⚕️", rating: 4.7, patients: 150 }
   ]);
-  const [posts, setPosts] = useState([
+  const [posts] = useState([
     { id: 1, author: "Namra Rauf", avatar: "👨‍💻", time: "1 hour ago", content: "Hospital Management System is now live! Excited to see how this will improve patient care and hospital operations. #TechForGood #Healthcare", likes: 28, comments: 12, type: "success" },
     { id: 2, author: "Dr. Sarah Johnson", avatar: "👩‍⚕️", time: "2 hours ago", content: "Just completed a successful heart surgery! The patient is recovering well. #Cardiology #Success", likes: 24, comments: 8, type: "success" },
     { id: 3, author: "Hospital Admin", avatar: "🏥", time: "4 hours ago", content: "New MRI machine installed in Radiology Department. Bookings now available!", likes: 15, comments: 3, type: "announcement" },
@@ -420,35 +420,35 @@ function App() {
     setShowPasswordReset(true);
   };
 
-  const handlePasswordResetSubmit = (e) => {
-    e.preventDefault();
-    if (newPassword && resettingUser) {
-      // Update user password in the allUsers list
-      setAllUsers(prevUsers => 
-        prevUsers.map(user => 
-          user.id === resettingUser.id 
-            ? { ...user, password: newPassword, lastPasswordReset: new Date().toLocaleString() }
-            : user
-        )
-      );
+  // const handlePasswordResetSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (newPassword && resettingUser) {
+  //     // Update user password in the allUsers list
+  //     setAllUsers(prevUsers => 
+  //       prevUsers.map(user => 
+  //         user.id === resettingUser.id 
+  //           ? { ...user, password: newPassword, lastPasswordReset: new Date().toLocaleString() }
+  //           : user
+  //       )
+  //     );
       
-      alert(`Password successfully reset for ${resettingUser.name}!\nNew password: ${newPassword}`);
-      setShowPasswordReset(false);
-      setResettingUser(null);
-      setNewPassword('');
-    } else {
-      alert('Please enter a new password');
-    }
-  };
+  //     alert(`Password successfully reset for ${resettingUser.name}!\nNew password: ${newPassword}`);
+  //     setShowPasswordReset(false);
+  //     setResettingUser(null);
+  //     setNewPassword('');
+  //   } else {
+  //     alert('Please enter a new password');
+  //   }
+  // };
 
-  const generateRandomPassword = () => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-    let password = '';
-    for (let i = 0; i < 12; i++) {
-      password += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    setNewPassword(password);
-  };
+  // const generateRandomPassword = () => {
+  //   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+  //   let password = '';
+  //   for (let i = 0; i < 12; i++) {
+  //     password += chars.charAt(Math.floor(Math.random() * chars.length));
+  //   }
+  //   setNewPassword(password);
+  // };
 
   // Back Button Component
   const BackButton = () => {
