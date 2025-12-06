@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function App() {
   console.log("App component is rendering!");
   const [currentPage, setCurrentPage] = useState('login'); // Start with login page
+  const [navigationHistory, setNavigationHistory] = useState(['login']); // Navigation history stack
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Authentication state
   const [userType, setUserType] = useState('patient'); // 'patient' or 'doctor'
   const [currentUser, setCurrentUser] = useState({
@@ -210,6 +211,8 @@ function App() {
       setAllUsers(prevUsers => [...prevUsers, newUser]);
       
       setIsAuthenticated(true);
+      // Initialize navigation history properly on login
+      setNavigationHistory(['login', 'home']);
       setCurrentPage('home');
       alert(`Welcome ${name}! You are logged in as ${role}`);
     } else {
@@ -301,6 +304,8 @@ function App() {
       }
       
       setIsAuthenticated(true);
+      // Initialize navigation history properly on login
+      setNavigationHistory(['login', 'home']);
       setCurrentPage('home');
       alert(`Welcome! You are logged in as ${email}`);
     } else {
@@ -310,7 +315,7 @@ function App() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setCurrentPage('login');
+    navigateToPage('login');
     setShowSuperAdmin(false);
     setCurrentUser({
       id: 1,
@@ -325,9 +330,64 @@ function App() {
     });
   };
 
+  // Navigation functions with history tracking
+  const navigateToPage = (page, skipHistory = false) => {
+    setCurrentPage(page);
+    if (!skipHistory) {
+      setNavigationHistory(prev => {
+        // Don't add duplicate consecutive pages
+        if (prev[prev.length - 1] !== page) {
+          const newHistory = [...prev, page];
+          console.log('Navigation history updated:', newHistory);
+          return newHistory;
+        }
+        return prev;
+      });
+    }
+  };
+
+  const goBack = () => {
+    console.log('goBack called, current history:', navigationHistory, 'currentPage:', currentPage);
+    setNavigationHistory(prev => {
+      if (prev.length <= 1) {
+        // If only one page in history and we're authenticated, stay at home
+        if (isAuthenticated && currentPage !== 'home') {
+          setCurrentPage('home');
+          const newHistory = prev[0] === 'login' ? ['login', 'home'] : ['home'];
+          console.log('Going to home, new history:', newHistory);
+          return newHistory;
+        }
+        // Otherwise, if not authenticated, go to login
+        if (!isAuthenticated) {
+          handleBackToLogin();
+          return ['login'];
+        }
+        return prev;
+      }
+      // Remove current page and go to previous
+      const newHistory = [...prev];
+      newHistory.pop(); // Remove current page
+      let previousPage = newHistory[newHistory.length - 1];
+      
+      // If previous page is 'login' and we're authenticated, go to 'home' instead
+      if (previousPage === 'login' && isAuthenticated) {
+        previousPage = 'home';
+        // Ensure home is in history
+        if (newHistory[newHistory.length - 1] !== 'home') {
+          newHistory[newHistory.length - 1] = 'home';
+        }
+      }
+      
+      console.log('Going back to:', previousPage, 'new history:', newHistory);
+      setCurrentPage(previousPage);
+      return newHistory;
+    });
+  };
+
   const handleBackToLogin = () => {
     setIsAuthenticated(false);
     setCurrentPage('login');
+    setNavigationHistory(['login']);
     setShowSuperAdmin(false);
     setShowUserForm(false);
     setShowPasswordReset(false);
@@ -454,7 +514,28 @@ function App() {
   const BackButton = () => {
     if (currentPage === 'login' || currentPage === 'register') return null;
     
-  return (
+    // Determine button text and behavior based on history
+    const canGoBack = navigationHistory.length > 1;
+    const isAtHome = currentPage === 'home';
+    const previousPage = navigationHistory.length > 1 ? navigationHistory[navigationHistory.length - 2] : null;
+    
+    // If at home, don't show back button or show "Home" (disabled state)
+    // If not at home and can go back, show "Back"
+    // If not at home and can't go back, show "Back to Home"
+    const buttonText = isAtHome ? 'Home' : (canGoBack && previousPage !== 'login') ? 'Back' : 'Back to Home';
+    const handleClick = () => {
+      if (isAtHome) {
+        // Already at home, do nothing
+        return;
+      }
+      if (canGoBack && previousPage && previousPage !== 'login') {
+        goBack();
+      } else {
+        navigateToPage('home');
+      }
+    };
+    
+    return (
       <div style={{
         position: "fixed",
         top: "20px",
@@ -462,33 +543,39 @@ function App() {
         zIndex: 1000
       }}>
         <button
-          onClick={handleBackToLogin}
+          onClick={handleClick}
+          disabled={isAtHome}
           style={{
             display: "flex",
             alignItems: "center",
             gap: "8px",
             padding: "12px 20px",
-            backgroundColor: "#6c757d",
+            backgroundColor: isAtHome ? "#95a5a6" : "#6c757d",
             color: "white",
             border: "none",
             borderRadius: "8px",
-            cursor: "pointer",
+            cursor: isAtHome ? "not-allowed" : "pointer",
             fontSize: "14px",
             fontWeight: "600",
             boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-            transition: "all 0.3s ease"
+            transition: "all 0.3s ease",
+            opacity: isAtHome ? 0.6 : 1
           }}
           onMouseOver={(e) => {
-            e.target.style.backgroundColor = "#5a6268";
-            e.target.style.transform = "translateY(-2px)";
+            if (!isAtHome) {
+              e.target.style.backgroundColor = "#5a6268";
+              e.target.style.transform = "translateY(-2px)";
+            }
           }}
           onMouseOut={(e) => {
-            e.target.style.backgroundColor = "#6c757d";
-            e.target.style.transform = "translateY(0)";
+            if (!isAtHome) {
+              e.target.style.backgroundColor = "#6c757d";
+              e.target.style.transform = "translateY(0)";
+            }
           }}
         >
           <span style={{ fontSize: "16px" }}>←</span>
-          Back to Login
+          {buttonText}
         </button>
       </div>
     );
@@ -605,7 +692,7 @@ function App() {
               <p style={{ margin: "0", color: "#657786", fontSize: "14px" }}>
                 Don't have an account? 
                 <button 
-                  onClick={() => setCurrentPage('register')}
+                  onClick={() => navigateToPage('register')}
                   style={{
                     background: "none",
                     border: "none",
@@ -761,7 +848,7 @@ function App() {
                 <p style={{ margin: "0", color: "#657786", fontSize: "14px" }}>
                   Already have an account? 
                   <button 
-                    onClick={() => setCurrentPage('login')}
+                    onClick={() => navigateToPage('login')}
                     style={{
                       background: "none",
                       border: "none",
@@ -793,7 +880,7 @@ function App() {
                   <strong>Total Patients: 156</strong>
                 </div>
                 <button 
-                  onClick={() => setCurrentPage('patients')}
+                  onClick={() => navigateToPage('patients')}
                   style={{ 
                     padding: "12px 20px", 
                     backgroundColor: "#007bff", 
@@ -817,7 +904,7 @@ function App() {
                   <strong>Active Doctors: 24</strong>
                 </div>
                 <button 
-                  onClick={() => setCurrentPage('doctors')}
+                  onClick={() => navigateToPage('doctors')}
                   style={{ 
                     padding: "12px 20px", 
                     backgroundColor: "#28a745", 
@@ -841,7 +928,7 @@ function App() {
                   <strong>Today's Appointments: 12</strong>
                 </div>
                 <button 
-                  onClick={() => setCurrentPage('appointments')}
+                  onClick={() => navigateToPage('appointments')}
                   style={{ 
                     padding: "12px 20px", 
                     backgroundColor: "#ffc107", 
@@ -2733,7 +2820,7 @@ function App() {
                 
                 <div style={{ padding: "8px 0" }}>
                   <button 
-                    onClick={() => setCurrentPage('home')}
+                    onClick={() => navigateToPage('home')}
                     style={{
                       width: "100%",
                       padding: "12px 20px",
@@ -2752,7 +2839,7 @@ function App() {
                   </button>
                   
                   <button 
-                    onClick={() => setCurrentPage('appointments')}
+                    onClick={() => navigateToPage('appointments')}
                     style={{
                       width: "100%",
                       padding: "12px 20px",
@@ -2773,7 +2860,7 @@ function App() {
                   </button>
                   
                   <button 
-                    onClick={() => setCurrentPage('patients')}
+                    onClick={() => navigateToPage('patients')}
                     style={{
                       width: "100%",
                       padding: "12px 20px",
@@ -2794,7 +2881,7 @@ function App() {
                   </button>
                   
                   <button 
-                    onClick={() => setCurrentPage('doctors')}
+                    onClick={() => navigateToPage('doctors')}
                     style={{
                       width: "100%",
                       padding: "12px 20px",
@@ -3242,9 +3329,13 @@ function App() {
   };
   
   // Authentication check - redirect to login if not authenticated
-  if (!isAuthenticated && currentPage !== 'login' && currentPage !== 'register') {
-    setCurrentPage('login');
-  }
+  useEffect(() => {
+    if (!isAuthenticated && currentPage !== 'login' && currentPage !== 'register') {
+      console.log('Not authenticated, redirecting to login');
+      setCurrentPage('login');
+      setNavigationHistory(['login']);
+    }
+  }, [isAuthenticated, currentPage]);
 
   return (
     <div>
