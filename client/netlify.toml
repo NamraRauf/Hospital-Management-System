@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+# React SPA routing fix - sab routes index.html pe redirect honge
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
