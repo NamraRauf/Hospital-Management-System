@@ -25,7 +25,6 @@ function App() {
     { id: 5, name: "Jane Smith", email: "jane@email.com", role: "Patient", specialization: "N/A", status: "Inactive", lastLogin: "2 days ago", avatar: "👩" },
     { id: 6, name: "Admin User", email: "admin@hospital.com", role: "Admin", specialization: "System Admin", status: "Active", lastLogin: "30 minutes ago", avatar: "👨‍💼" }
   ]);
-  const [showSuperAdmin, setShowSuperAdmin] = useState(false);
   const [showUserForm, setShowUserForm] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [showPasswordReset, setShowPasswordReset] = useState(false);
@@ -193,9 +192,6 @@ function App() {
       });
       
       setUserType(userType);
-      if (userType === 'superadmin') {
-        setShowSuperAdmin(true);
-      }
       
       // Add new user to the allUsers list
       const newUser = {
@@ -237,7 +233,6 @@ function App() {
           department: "IT Department"
         });
         setUserType('superadmin');
-        setShowSuperAdmin(true);
       } else if (email.includes('admin')) {
         setCurrentUser({
           id: 5,
@@ -316,7 +311,6 @@ function App() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     navigateToPage('login');
-    setShowSuperAdmin(false);
     setCurrentUser({
       id: 1,
       name: "Namra Rauf",
@@ -388,7 +382,6 @@ function App() {
     setIsAuthenticated(false);
     setCurrentPage('login');
     setNavigationHistory(['login']);
-    setShowSuperAdmin(false);
     setShowUserForm(false);
     setShowPasswordReset(false);
     setShowAppointmentForm(false);

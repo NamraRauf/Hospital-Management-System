@@ -64,6 +64,14 @@ Yeh file aapko sabhi documentation files ka index deta hai.
 
 ---
 
+### 7. **FRONTEND_DEPLOY_ONE_PAGE.md** - Frontend Deploy (1 Page)
+- One-page, print-friendly frontend deployment guide
+- Fastest method (Netlify manual drag & drop)
+- GitHub deploy checklist (including `node_modules` cleanup)
+- **Use this when you need frontend deploy urgently**
+
+---
+
 ## 🎯 Which Documentation to Use?
 
 ### Scenario 1: First Time Deployment
@@ -75,11 +83,13 @@ Yeh file aapko sabhi documentation files ka index deta hai.
 **Read:**
 - `NETLIFY_DEPLOYMENT.md` - Complete guide
 - `NETLIFY_QUICK_FIX.md` - If facing issues
+- `FRONTEND_DEPLOY_ONE_PAGE.md` - Print-friendly one-page steps
 
 ### Scenario 3: Netlify Deployment Failing
 **Read:**
 - `NETLIFY_QUICK_FIX.md` - Quick fixes
 - Check `netlify.toml` file in root directory
+ - If repo heavy ho: `FRONTEND_DEPLOY_ONE_PAGE.md` (node_modules cleanup section)
 
 ### Scenario 4: Complete Understanding
 **Read all:**

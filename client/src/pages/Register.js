@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { registerUser } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -14,6 +16,7 @@ const Register = () => {
       const res = await registerUser(formData);
       alert('Registration Successful');
       console.log(res.data);
+      navigate('/login');
     } catch (error) {
       console.error(error);
       alert('Registration Failed');

@@ -18,11 +18,18 @@ const Login = () => {
       const res = await loginUser(formData);
       alert('Login Successful');
       console.log(res.data);
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('userType', formData.userType);
+      if (res?.data?.token) {
+        localStorage.setItem('token', res.data.token);
+      } else {
+        localStorage.removeItem('token');
+      }
+
+      // Prefer server-reported userType (Doctor/Patient), fallback to selected value
+      const resolvedUserType = (res?.data?.userType || formData.userType || 'patient').toLowerCase();
+      localStorage.setItem('userType', resolvedUserType);
       
       // Navigate to appropriate dashboard
-      if (formData.userType === 'doctor') {
+      if (resolvedUserType === 'doctor') {
         navigate('/doctor-dashboard');
       } else {
         navigate('/patient-dashboard');

@@ -77,7 +77,15 @@ A comprehensive, modern hospital management system built with React, Node.js, an
    cd Hospital-Management-System
    ```
 
-2. **Install dependencies**
+2. **Install dependencies (recommended)**
+   - From the repo root, one install will set up both `server` and `client`:
+
+   ```bash
+   npm install
+   ```
+
+   - Or install them separately:
+
    ```bash
    # Install server dependencies
    cd server
@@ -106,6 +114,12 @@ A comprehensive, modern hospital management system built with React, Node.js, an
    cd client
    npm start
    ```
+
+### API URL (Frontend)
+
+- By default, the frontend uses `http://localhost:6000/api`.
+- In production, set:
+  - `REACT_APP_API_URL=https://<your-backend-domain>/api`
 
 ## 🔑 Access Credentials
 
@@ -200,6 +214,13 @@ cd client && npm start
 2. Configure environment variables
 3. Deploy backend to Railway/Render
 4. Deploy frontend to Netlify/Vercel
+
+#### Netlify (Frontend) settings (if configuring manually)
+
+- **Base directory:** `client`
+- **Build command:** `npm install && npm run build`
+- **Publish directory:** `build`
+- **Env var:** `REACT_APP_API_URL` = `https://<your-backend-domain>/api`
 
 ## 📊 System Capabilities
 
