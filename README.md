@@ -188,9 +188,17 @@ cd client && npm start
 ```
 
 ### Production Deployment
+
+#### Quick Deployment Guides:
+- **📖 Complete Deployment Guide:** See `DEPLOYMENT.md`
+- **⚡ Quick Deploy Guide:** See `QUICK_DEPLOY.md`
+- **🚀 Netlify Deployment (Frontend):** See `NETLIFY_DEPLOYMENT.md`
+- **🔧 Netlify Quick Fix:** See `NETLIFY_QUICK_FIX.md`
+
+#### Steps:
 1. Set up MongoDB Atlas
 2. Configure environment variables
-3. Deploy backend to Heroku/Railway
+3. Deploy backend to Railway/Render
 4. Deploy frontend to Netlify/Vercel
 
 ## 📊 System Capabilities
