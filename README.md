@@ -2,6 +2,14 @@
 
 A comprehensive, modern hospital management system built with React, Node.js, and MongoDB. This system provides complete management capabilities for hospitals, including patient management, doctor scheduling, appointment booking, and administrative controls.
 
+## 🌐 Live Links
+
+- **🌍 Frontend (Live Website):** [https://hospital-hms-frontend.netlify.app](https://hospital-hms-frontend.netlify.app)
+- **🔧 Backend API:** [https://hospital-management-system-production-913a.up.railway.app](https://hospital-management-system-production-913a.up.railway.app)
+- **📚 GitHub Repository:** [https://github.com/NamraRauf/Hospital-Management-System](https://github.com/NamraRauf/Hospital-Management-System)
+- **📖 Project Explanation:** See [`HOW_I_BUILT_THIS.md`](./HOW_I_BUILT_THIS.md) for complete step-by-step explanation
+- **📄 Complete Documentation:** See [`FYP_DOCUMENTATION.md`](./FYP_DOCUMENTATION.md) (70 pages)
+
 ## 🚀 Features
 
 ### 🔐 Authentication & Authorization
